@@ -1,0 +1,5 @@
+name = input('Please input your name: ')
+print ('Hello,',name)
+length = input('Please input length: ')
+width = input ('Please input width: ')
+print (length,'*',width,'=',float(length)*float(width))
