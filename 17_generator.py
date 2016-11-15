@@ -47,11 +47,12 @@ def triangeles():
 		yield L
 		L1=[0]+L
 		L2=L+[0]
+		L=[L1[i]+L2[i] for i in range(len(L)+1)]
 		#L=[L[i]+L1[i] for i in range(len(L)))]+[1]
-		L=L1+L2
 
+n=0		
 for t in triangeles():
 	print(t)
 	n=n+1
-	if n==10:
+	if n==15:
 		break
