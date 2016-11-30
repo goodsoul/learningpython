@@ -23,8 +23,15 @@ def count():
 	for i in range(1,4):
 		fs.append(f(i))
 	return fs
+
+#用lambda简化代码
+def count_lambda():
+	fs=[]
+	for i in range(1,4):
+		fs.append(lambda i=i:i*i)
+	return fs
 	
-f1, f2, f3 = count()
+f1, f2, f3 = count_lambda()
 print(f1, f2, f3)
 print(f1())
 print(f2())
