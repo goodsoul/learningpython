@@ -26,8 +26,17 @@ print(L_S_N)
 L_S_S=sorted(L,key=lambda x:x[1],reverse=True)
 print(L_S_S)
 
-def return_name(t)
+def return_name(t):
 	return t[0]
+	
+def return_score(t):
+	return t[1]
+
+	
+L2 = sorted(L, key=return_name)
+L3 = sorted(L, key=return_score,reverse=True)
+print(L2)
+print(L3)
 	
 
 
