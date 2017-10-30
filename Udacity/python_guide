@@ -1,1 +1,6 @@
+#Google Coding Rules For Python:
 https://google.github.io/styleguide/pyguide.html
+
+#预定义变量 _name_ 和 _module_ 的文档:
+http://www2.lib.uchicago.edu/keith/courses/python/class/5/
+https://docs.python.org/2/reference/datamodel.html
