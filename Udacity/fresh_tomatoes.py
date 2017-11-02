@@ -141,7 +141,8 @@ def create_movie_tiles_content(movies):
         #    r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
         #trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
         #                      else None)
-    
+
+        # Update to use bilibili to play the video
         start_code=movie.trailer_youtube_url.find('aid')+4
         end_code=movie.trailer_youtube_url.find('&page')
         bilibili_code=movie.trailer_youtube_url[start_code:end_code]
