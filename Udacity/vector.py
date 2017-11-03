@@ -161,4 +161,20 @@ class Vector(object):
         return self.minus(self.component_parallel_to(b))
 
     def component_cross_product(self,v):
-        return
+        len_self=self.dimension
+        len_v=v.dimension
+
+        print 'vector1:'+str(len_self)
+        print 'vector2:'+str(len_v)
+ 
+        x=self.coordinates[1]*v.coordinates[2]-self.coordinates[2]*v.coordinates[1]
+        y=-(self.coordinates[0]*v.coordinates[2]-self.coordinates[2]*v.coordinates[0])
+        z=self.coordinates[0]*v.coordinates[1]-self.coordinates[1]*v.coordinates[0]
+        
+        return Vector([x,y,z])
+
+    def component_area_of_para(self,v):        
+        return self.component_cross_product(v).magnitude()
+
+    def component_area_of_triangle(self,v):
+        return self.component_area_of_para(v)/2

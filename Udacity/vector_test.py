@@ -38,6 +38,17 @@ b10 = vector.Vector([-2.155,-9.353,-9.473])
 v11 = vector.Vector([3.009,-6.172,3.692,-2.51])
 b11 = vector.Vector([6.404,-9.144,2.759,8.718])
 
+#--------------------------------------
+
+v12 = vector.Vector([8.462,7.893,-8.187])
+w12 = vector.Vector([6.984,-5.975,4.778])
+
+v13 = vector.Vector([-8.987,-9.838,5.031])
+w13 = vector.Vector([-4.268,-1.861,-8.866])
+
+v14 = vector.Vector([1.5,9.547,3.691])
+w14 = vector.Vector([-6.007,0.124,5.772])
+
 #print v1.magnitude()
 #print v2.magnitude()
 #print v3.normalized()
@@ -50,6 +61,8 @@ print v3.angle(w3,'r')
 print v4.angle(w4,'d')
 '''
 
+'''
+#Check Paralell or Orthonogal
 print v5.check_para_orth(w5)
 print v6.check_para_orth(w6)
 print v7.check_para_orth(w7)
@@ -60,6 +73,11 @@ print v10.component_orthogonal_to(b10)
 
 print v11.component_parallel_to(b11)
 print v11.component_orthogonal_to(b11)
+'''
+
+print v12.component_cross_product(w12)
+print v13.component_area_of_para(w13)
+print v14.component_area_of_triangle(w14)
 
 #print v2==v3
 #print v1==v3
