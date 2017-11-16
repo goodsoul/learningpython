@@ -2,17 +2,17 @@
 import vector
 import math
 
-v1 = vector.Vector([7.887,4.138])
-w1 = vector.Vector([-8.802,6.776])
+v1 = vector.Vector(['7.887','4.138'])
+w1 = vector.Vector(['-8.802','6.776'])
 
-v2 = vector.Vector([-5.955,-4.904,-1.874])
-w2 = vector.Vector([-4.496,-8.755,7.103])
+v2 = vector.Vector(['-5.955','-4.904','-1.874'])
+w2 = vector.Vector(['-4.496','-8.755','7.103'])
 
-v3 = vector.Vector([3.183,-7.627])
-w3 = vector.Vector([-2.668,5.319])
+v3 = vector.Vector(['3.183','-7.627'])
+w3 = vector.Vector(['-2.668','5.319'])
 
-v4 = vector.Vector([7.35,0.221,5.188])
-w4 = vector.Vector([2.751,8.259,3.985])
+v4 = vector.Vector(['7.35','0.221','5.188'])
+w4 = vector.Vector(['2.751','8.259','3.985'])
 
 #--------------------------------------
 
@@ -51,7 +51,7 @@ w14 = vector.Vector([-6.007,0.124,5.772])
 
 #print v1.magnitude()
 #print v2.magnitude()
-#print v3.normalized()
+print v3.normalized()
 #print v4.normalized()
 
 '''

@@ -1,19 +1,21 @@
 import math
-import decimal
+from decimal import Decimal,getcontext
 
-decimal.getcontext().prec = 30
+getcontext().prec = 30
 
 class Vector(object):
 
     """Constant message"""
     CANNOT_NORMALIZE_ZERO_VECTOR_MSG = 'Cannot normalize the zero vector'
+    ONLY_DEFINED_IN_TWO_THREE_DIMS_MSG = 'Only defined in two three dimensions vectors'
     
     def __init__(self, coordinates):
         try:
             if not coordinates:
                 raise ValueError
-            self.coordinates = tuple(coordinates)
-            self.dimension = len(coordinates)
+            #self.coordinates = tuple(coordinates)
+            self.coordinates = tuple([Decimal(x) for x in coordinates])
+            self.dimension = len(self.coordinates)
 
         except ValueError:
             raise ValueError('The coordinates must be nonempty')
@@ -21,11 +23,27 @@ class Vector(object):
         except TypeError:
             raise TypeError('The coordinates must be an iterable')
 
+    """Iterable Feature"""
+    def __iter__(self):
+        self.current = -1
+        return self
+
+    def next(self):
+        self.current += 1
+        if self.current >= self.dimension:
+            raise StopIteration
+        else:
+            return self.coordinates[self.current]
+
+    def __getitem__(self, key):
+        if key >= self.dimension:
+            raise IndexError
+        else:
+            return self.coordinates[key]
 
     def __str__(self):
         return 'Vector: {}'.format(self.coordinates)
-
-
+  
     def __eq__(self, v):
         return self.coordinates == v.coordinates
 
@@ -41,7 +59,7 @@ class Vector(object):
 
     def time_scalar(self, c):
         """Perform time scalar action for vector"""
-        new_coordinates = [c*x for x in self.coordinates]
+        new_coordinates = [Decimal(c)*x for x in self.coordinates]
         return Vector(new_coordinates)
 
     def magnitude(self):
@@ -53,7 +71,7 @@ class Vector(object):
         s=0
         for x in self.coordinates:
             s+=x*x
-        return math.sqrt(s)
+        return Decimal(math.sqrt(s))
 
     def normalized(self):
         """ Transfer vector to normal vector:
@@ -62,7 +80,7 @@ class Vector(object):
         """
         try:
             magnitude=self.magnitude()
-            return self.time_scalar(1./magnitude)
+            return self.time_scalar(Decimal('1.0')/magnitude)
 
         except ZeroDivisionError:
             raise Exception('Cannot normalize the zero vector')
@@ -130,6 +148,25 @@ class Vector(object):
 
         return 'Paralell:'+str(ispara)+' ; Orthogonal:'+str(isorth)
 
+    def is_parallel_to(self,v,tolerance=1e-10):
+        ispara = False
+        if (self.is_zero() or v.is_zero()):
+            ispara = True
+        else:
+            if 1-abs(self.normalized().dot_product(v.normalized()))<tolerance:
+                ispara = True
+        return ispara
+
+
+    def is_orth_to(self,v,tolerance=1e-10):
+        isorth = False
+        if (self.is_zero() or v.is_zero()):
+            isorth = True
+        else:
+            if abs(self.normalized().dot_product(v.normalized()))<tolerance:
+                isorth = True
+        return isorth    
+
     def component_parallel_to(self,b):
         """Calculate the project vector:
             Key arguments:
@@ -161,20 +198,53 @@ class Vector(object):
         return self.minus(self.component_parallel_to(b))
 
     def component_cross_product(self,v):
-        len_self=self.dimension
-        len_v=v.dimension
+        """Calculate the cross product for two vectors:
+            Key arguments:
+                self -- vector1
+                v -- vector2
+            Output:
+                Orthogonal vector For baseline project
+        """ 
+        try:
+            x_1,y_1,z_1=self.coordinates
+            x_2,y_2,z_2=v.coordinates
+            new_coordinates=[y_1*z_2 - y_2*z_1,
+                             -(x_1*z_2 - x_2*z_1),
+                             x_1*y_2 - x_2*y_1]
+            return Vector(new_coordinates)
+        except ValueError as e:
+            msg = str(e)
+            if msg == 'need more than 2 values to unpack':
+                self_embedded_in_R3 = Vector(self.coordinates + ('0',))
+                v_embedded_in_R3 = Vector(v.coordinates + ('0',))
+                return self_embedded_in_R3.cross(v_embedded_in_R3)
+            elif (msg == 'too many values to unpack' or
+                    msg == 'need more than 1 value to unpack'):
+                raise Exception(self.ONLY_DEFINED_IN_TWO_THREE_DIMS_MSG)
+            else:
+                raise e
 
-        print 'vector1:'+str(len_self)
-        print 'vector2:'+str(len_v)
- 
-        x=self.coordinates[1]*v.coordinates[2]-self.coordinates[2]*v.coordinates[1]
-        y=-(self.coordinates[0]*v.coordinates[2]-self.coordinates[2]*v.coordinates[0])
-        z=self.coordinates[0]*v.coordinates[1]-self.coordinates[1]*v.coordinates[0]
-        
-        return Vector([x,y,z])
-
-    def component_area_of_para(self,v):        
+    def component_area_of_para(self,v):
+        """Calculate the area of parallelogram:
+            Key arguments:
+                self -- vector1
+                v -- vector2
+            Output:
+                area of parallelogram
+            Formula:
+                ||v x w|| = ||v||*||w||*sin(a)
+                => area of parallelogram = ||v x w||
+        """ 
         return self.component_cross_product(v).magnitude()
 
     def component_area_of_triangle(self,v):
+        """Calculate the area of triangle:
+            Key arguments:
+                self -- vector1
+                v -- vector2
+            Output:
+                area of triangle
+            Formula:
+                area of triangle = 0.5 * ||v x w||
+        """ 
         return self.component_area_of_para(v)/2
